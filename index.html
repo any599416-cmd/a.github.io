@@ -4,62 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>生日快乐</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#E9D8FD',
-                        secondary: '#9F7AEA',
-                    },
-                    fontFamily: {
-                        birthday: ['"Ma Shan Zheng"', '"Noto Sans SC"', 'cursive'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            }
-            .text-shadow-lg {
-                text-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            }
-            .float {
-                animation: float 6s ease-in-out infinite;
-            }
-            .glow {
-                box-shadow: 0 0 15px rgba(255,255,255,0.5);
-            }
-            .sparkle {
-                animation: sparkle 2s infinite alternate;
-            }
-        }
+    <style>
+        /* 基础样式（替代Tailwind，无外部依赖） */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { min-height: 100vh; overflow: hidden; font-family: "华文行楷", "楷体", cursive; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-10 { margin-top: 2.5rem; }
+        .my-8 { margin-top: 2rem; margin-bottom: 2rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .text-white { color: #fff; }
+        .text-center { text-align: center; }
+        .text-shadow { text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .text-shadow-lg { text-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .rounded-2xl { border-radius: 1rem; }
+        .p-8 { padding: 2rem; }
+        .md\:p-10 { padding: 2.5rem; }
+        .border { border: 1px solid; }
+        .transition-all { transition: all 0.3s; }
+        .hover\:scale-105:hover { transform: scale(1.05); }
+        .hover\:scale-110:hover { transform: scale(1.1); }
+        .font-bold { font-weight: bold; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .rounded-full { border-radius: 9999px; }
+        .pointer-events-none { pointer-events: none; }
+        .fixed { position: fixed; }
+        .absolute { position: absolute; }
+        .relative { position: relative; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .z-0 { z-index: 0; }
+        .z-10 { z-index: 10; }
+        .z-20 { z-index: 20; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .object-cover { object-fit: cover; }
+        .bg-black\/30 { background-color: rgba(0,0,0,0.3); }
+        .bg-white\/10 { background-color: rgba(255,255,255,0.1); }
+        .border-white\/20 { border-color: rgba(255,255,255,0.2); }
+        .bg-secondary\/80 { background-color: rgba(159,122,234,0.8); }
+        .hover\:bg-secondary:hover { background-color: #9F7AEA; }
+        .text-sm { font-size: 0.875rem; }
+        .text-white\/70 { color: rgba(255,255,255,0.7); }
+        .glow { box-shadow: 0 0 15px rgba(255,255,255,0.5); }
 
+        /* 动画样式 */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
         }
+        .float { animation: float 6s ease-in-out infinite; }
 
         @keyframes sparkle {
             from { opacity: 0.7; transform: scale(1); }
             to { opacity: 1; transform: scale(1.05); }
         }
+        .sparkle { animation: sparkle 2s infinite alternate; }
 
+        @keyframes rise {
+            to { transform: translateY(-100vh); }
+        }
         .balloon {
             position: absolute;
             opacity: 0.8;
             animation: rise 20s linear infinite;
         }
 
-        @keyframes rise {
-            to { transform: translateY(-100vh); }
+        @keyframes twinkle {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
         }
-
         .star {
             position: absolute;
             background-color: white;
@@ -67,43 +86,39 @@
             animation: twinkle 2s infinite alternate;
         }
 
-        @keyframes twinkle {
-            from { opacity: 0.3; }
-            to { opacity: 1; }
-        }
-
-        .firework {
-            position: absolute;
-            pointer-events: none;
+        /* 自定义字体（系统自带书法字体，无远程依赖） */
+        .font-birthday {
+            font-family: "华文行楷", "楷体", cursive;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 </head>
-<body class="min-h-screen overflow-hidden">
-    <!-- 背景图 -->
+<body>
+    <!-- 背景图（本地引用你的birthday-bg.png） -->
     <div class="fixed inset-0 z-0">
         <img src="birthday-bg.png" alt="生日背景" class="w-full h-full object-cover">
-        <!-- 移除背景遮罩的模糊效果 -->
         <div class="absolute inset-0 bg-black/30"></div>
     </div>
 
-    <!-- 星光装饰 -->
+    <!-- 星光装饰（简化数量） -->
     <div id="stars" class="fixed inset-0 z-10"></div>
 
-    <!-- 气球装饰 -->
+    <!-- 气球装饰（简化数量） -->
     <div id="balloons" class="fixed inset-0 z-10 pointer-events-none"></div>
 
     <!-- 主要内容 -->
     <div class="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 py-12">
-        <!-- 顶部装饰 -->
+        <!-- 顶部装饰（用内联SVG替代Font Awesome，无外部依赖） -->
         <div class="mb-6 text-white text-4xl opacity-80 float">
-            <i class="fa fa-gift mr-3"></i>
-            <i class="fa fa-birthday-cake mx-3"></i>
-            <i class="fa fa-star ml-3"></i>
+            <!-- 礼物图标 -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3"><path d="M12 2v2"></path><path d="M15.54 8.46a5 5 0 0 0-7.08 0"></path><path d="M2 12h20"></path><path d="M7.5 7.5 6 6"></path><path d="M18 6l-1.5 1.5"></path><path d="M7.5 16.5 6 18"></path><path d="M18 18l-1.5-1.5"></path></svg>
+            <!-- 蛋糕图标 -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><path d="M2 11.5a2.5 2.5 0 0 1 2.5-2.5h15a2.5 2.5 0 0 1 2.5 2.5v1a2.5 2.5 0 0 1-2.5 2.5H15v3h3a1 1 0 0 1 0 2H6a1 1 0 0 1 0-2h3v-3H4.5A2.5 2.5 0 0 1 2 12.5v-1z"></path><path d="M7 7v1"></path><path d="M17 7v1"></path><path d="M12 7v1"></path></svg>
+            <!-- 星星图标 -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
         </div>
 
-        <!-- 生日卡片（移除模糊效果） -->
-        <div class="max-w-md w-full bg-white/10 rounded-2xl p-8 md:p-10 border border-white/20 glow transform transition-all duration-700 hover:scale-105">
+        <!-- 生日卡片 -->
+        <div class="max-w-md w-full bg-white/10 rounded-2xl p-8 md:p-10 border border-white/20 glow transition-all duration-700 hover:scale-105">
             <h1 class="font-birthday text-[clamp(2.5rem,8vw,4rem)] text-center text-white text-shadow-lg mb-6 sparkle">生日快乐！</h1>
             
             <p class="font-birthday text-[clamp(1.5rem,5vw,2.5rem)] text-center text-white text-shadow my-8">杨玉航</p>
@@ -116,7 +131,9 @@
             
             <div class="flex justify-center">
                 <button id="celebrate" class="bg-secondary/80 hover:bg-secondary text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-110 flex items-center">
-                    <i class="fa fa-magic mr-2"></i> 点击庆祝
+                    <!-- 魔法棒图标 -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 5 4 14"></path><path d="M15 9a4 4 0 1 0 0 8"></path><path d="M7 20v-1a4 4 0 0 1 4-4h1a4 4 0 0 1 0 8H7Z"></path></svg>
+                    点击庆祝
                 </button>
             </div>
         </div>
@@ -128,10 +145,10 @@
     </div>
 
     <script>
-        // 创建随机星光
+        // 创建随机星光（简化数量：30个）
         function createStars() {
             const starsContainer = document.getElementById('stars');
-            const count = 100;
+            const count = 30;
             
             for (let i = 0; i < count; i++) {
                 const star = document.createElement('div');
@@ -145,16 +162,17 @@
             }
         }
 
-        // 创建漂浮气球
+        // 创建漂浮气球（简化数量：4个）
         function createBalloons() {
             const balloonsContainer = document.getElementById('balloons');
-            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
-            const count = 8;
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'];
+            const count = 4;
             
             for (let i = 0; i < count; i++) {
                 const balloon = document.createElement('div');
                 balloon.className = 'balloon';
-                balloon.innerHTML = '<i class="fa fa-circle"></i>';
+                // 气球图标（内联SVG）
+                balloon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0"><path d="M12 2a5 5 0 0 1 5 5v4a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5zm0 14a5 5 0 0 1 5 5H7a5 5 0 0 1 5-5z"/></svg>';
                 balloon.style.color = colors[Math.floor(Math.random() * colors.length)];
                 balloon.style.fontSize = `${Math.random() * 20 + 20}px`;
                 balloon.style.left = `${Math.random() * 100}vw`;
@@ -171,7 +189,6 @@
             const firework = document.createElement('div');
             firework.className = 'firework';
             
-            // 随机烟花大小和颜色
             const size = Math.random() * 100 + 50;
             const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
             
@@ -183,7 +200,6 @@
             firework.style.boxShadow = `0 0 40px 10px ${color}`;
             firework.style.opacity = '0';
             
-            // 动画效果
             firework.animate([
                 { opacity: 0, transform: 'scale(0)' },
                 { opacity: 1, transform: 'scale(1)' },
@@ -194,11 +210,7 @@
             });
             
             fireworksContainer.appendChild(firework);
-            
-            // 移除烟花元素
-            setTimeout(() => {
-                firework.remove();
-            }, 1500);
+            setTimeout(() => firework.remove(), 1500);
         }
 
         // 初始化
@@ -207,9 +219,8 @@
             createBalloons();
             
             // 点击庆祝按钮触发烟花
-            document.getElementById('celebrate').addEventListener('click', (e) => {
-                // 在随机位置创建多个烟花
-                for (let i = 0; i < 15; i++) {
+            document.getElementById('celebrate').addEventListener('click', () => {
+                for (let i = 0; i < 10; i++) {
                     setTimeout(() => {
                         const x = Math.random() * window.innerWidth;
                         const y = Math.random() * window.innerHeight;
@@ -218,14 +229,11 @@
                 }
             });
             
-            // 点击页面任意位置也会触发烟花
+            // 点击页面触发烟花
             document.addEventListener('click', (e) => {
-                if (e.target.id !== 'celebrate') {
-                    createFirework(e.clientX, e.clientY);
-                }
+                if (e.target.id !== 'celebrate') createFirework(e.clientX, e.clientY);
             });
         });
     </script>
 </body>
-
 </html>
