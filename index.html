@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E9D8FD',
+                        secondary: '#9F7AEA',
+                    },
+                    fontFamily: {
+                        birthday: ['"Ma Shan Zheng"', '"Noto Sans SC"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            }
+            .float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .glow {
+                box-shadow: 0 0 15px rgba(255,255,255,0.5);
+            }
+            .sparkle {
+                animation: sparkle 2s infinite alternate;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes sparkle {
+            from { opacity: 0.7; transform: scale(1); }
+            to { opacity: 1; transform: scale(1.05); }
+        }
+
+        .balloon {
+            position: absolute;
+            opacity: 0.8;
+            animation: rise 20s linear infinite;
+        }
+
+        @keyframes rise {
+            to { transform: translateY(-100vh); }
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+
+        .firework {
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen overflow-hidden">
+    <!-- 背景图 -->
+    <div class="fixed inset-0 z-0">
+        <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/b784a5ba101c4e39b5d7e420d4ef8167.png~tplv-a9rns2rl98-24-95-exif:960:960.png?rcl=202511181752275BAB7AD9E4FC118714D9&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1764064347&x-signature=YUbujA1DjuRiBfzEPh8uQ8lH6uI%3D" 
+             alt="生日背景" 
+             class="w-full h-full object-cover">
+        <!-- 移除背景遮罩的模糊效果 -->
+        <div class="absolute inset-0 bg-black/30"></div>
+    </div>
+
+    <!-- 星光装饰 -->
+    <div id="stars" class="fixed inset-0 z-10"></div>
+
+    <!-- 气球装饰 -->
+    <div id="balloons" class="fixed inset-0 z-10 pointer-events-none"></div>
+
+    <!-- 主要内容 -->
+    <div class="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 py-12">
+        <!-- 顶部装饰 -->
+        <div class="mb-6 text-white text-4xl opacity-80 float">
+            <i class="fa fa-gift mr-3"></i>
+            <i class="fa fa-birthday-cake mx-3"></i>
+            <i class="fa fa-star ml-3"></i>
+        </div>
+
+        <!-- 生日卡片（移除模糊效果） -->
+        <div class="max-w-md w-full bg-white/10 rounded-2xl p-8 md:p-10 border border-white/20 glow transform transition-all duration-700 hover:scale-105">
+            <h1 class="font-birthday text-[clamp(2.5rem,8vw,4rem)] text-center text-white text-shadow-lg mb-6 sparkle">生日快乐！</h1>
+            
+            <p class="font-birthday text-[clamp(1.5rem,5vw,2.5rem)] text-center text-white text-shadow my-8">杨玉航</p>
+            
+            <p class="text-white text-[clamp(1rem,3vw,1.25rem)] text-center leading-relaxed text-shadow mb-8">
+                愿所有的美好与温柔<br>
+                都如约而至<br>
+                新的一岁，平安喜乐，万事胜意
+            </p>
+            
+            <div class="flex justify-center">
+                <button id="celebrate" class="bg-secondary/80 hover:bg-secondary text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-110 flex items-center">
+                    <i class="fa fa-magic mr-2"></i> 点击庆祝
+                </button>
+            </div>
+        </div>
+
+        <!-- 底部装饰 -->
+        <div class="mt-10 text-white/70 text-sm">
+            <p>愿此刻的美好，定格成永恒的记忆</p>
+        </div>
+    </div>
+
+    <script>
+        // 创建随机星光
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const count = 100;
+            
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 创建漂浮气球
+        function createBalloons() {
+            const balloonsContainer = document.getElementById('balloons');
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
+            const count = 8;
+            
+            for (let i = 0; i < count; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.innerHTML = '<i class="fa fa-circle"></i>';
+                balloon.style.color = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.fontSize = `${Math.random() * 20 + 20}px`;
+                balloon.style.left = `${Math.random() * 100}vw`;
+                balloon.style.bottom = `-${Math.random() * 50 + 20}px`;
+                balloon.style.animationDelay = `${Math.random() * 10}s`;
+                balloon.style.animationDuration = `${Math.random() * 30 + 30}s`;
+                balloonsContainer.appendChild(balloon);
+            }
+        }
+
+        // 创建烟花效果
+        function createFirework(x, y) {
+            const fireworksContainer = document.body;
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            
+            // 随机烟花大小和颜色
+            const size = Math.random() * 100 + 50;
+            const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            
+            firework.style.width = `${size}px`;
+            firework.style.height = `${size}px`;
+            firework.style.left = `${x - size/2}px`;
+            firework.style.top = `${y - size/2}px`;
+            firework.style.borderRadius = '50%';
+            firework.style.boxShadow = `0 0 40px 10px ${color}`;
+            firework.style.opacity = '0';
+            
+            // 动画效果
+            firework.animate([
+                { opacity: 0, transform: 'scale(0)' },
+                { opacity: 1, transform: 'scale(1)' },
+                { opacity: 0, transform: 'scale(0.5)' }
+            ], {
+                duration: 1500,
+                easing: 'cubic-bezier(0.17, 0.67, 0.83, 0.67)'
+            });
+            
+            fireworksContainer.appendChild(firework);
+            
+            // 移除烟花元素
+            setTimeout(() => {
+                firework.remove();
+            }, 1500);
+        }
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createBalloons();
+            
+            // 点击庆祝按钮触发烟花
+            document.getElementById('celebrate').addEventListener('click', (e) => {
+                // 在随机位置创建多个烟花
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * window.innerHeight;
+                        createFirework(x, y);
+                    }, i * 200);
+                }
+            });
+            
+            // 点击页面任意位置也会触发烟花
+            document.addEventListener('click', (e) => {
+                if (e.target.id !== 'celebrate') {
+                    createFirework(e.clientX, e.clientY);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
